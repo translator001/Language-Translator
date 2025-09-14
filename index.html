@@ -8,10 +8,14 @@
 </head>
 <body>
     <div class="container">
-        <h1>Live Language Translator</h1>
+        <h1>🌍 Live Language Translator</h1>
         <div class="translator">
+            
+            <!-- Input Section -->
             <div class="input-section">
+                <label for="source-lang">From:</label>
                 <select id="source-lang">
+                    <option value="">🌐 Auto Detect</option>
                     <option value="en">English</option>
                     <option value="es">Spanish</option>
                     <option value="fr">French</option>
@@ -21,7 +25,10 @@
                 <textarea id="input-text" placeholder="Type or speak text here..."></textarea>
                 <button id="mic-btn">🎤 Speak</button>
             </div>
+
+            <!-- Output Section -->
             <div class="output-section">
+                <label for="target-lang">To:</label>
                 <select id="target-lang">
                     <option value="es">Spanish</option>
                     <option value="en">English</option>
@@ -29,10 +36,12 @@
                     <option value="de">German</option>
                     <option value="hi">Hindi</option>
                 </select>
-                <textarea id="output-text" placeholder="Translated text appears here..." readonly></textarea>
+                <textarea id="output-text" placeholder="Translated text will appear here..." readonly></textarea>
                 <button id="speak-btn">🔊 Listen</button>
             </div>
-            <button id="translate-btn">Translate</button>
+
+            <!-- Translate Button -->
+            <button id="translate-btn">🚀 Translate</button>
         </div>
     </div>
     <script src="script.js"></script>
