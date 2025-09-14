@@ -38,14 +38,14 @@ recognition.onend = () => {
     micBtn.classList.remove('active');
 };
 
-// Translation Function (Using LibreTranslate API)
+// Translation Function (Using LibreTranslate.de API)
 async function translateText(text, source, target) {
     try {
-        const response = await fetch('https://libretranslate.com/translate', {
+        const response = await fetch('https://libretranslate.de/translate', {
             method: 'POST',
             body: JSON.stringify({
                 q: text,
-                source: source,
+                source: source === "" ? "auto" : source, // auto-detect if not set
                 target: target,
                 format: 'text'
             }),
@@ -59,15 +59,18 @@ async function translateText(text, source, target) {
     }
 }
 
+// Translate Button
 translateBtn.addEventListener('click', async () => {
     const text = inputText.value;
     if (text.trim() === '') return;
+    outputText.value = "Translating...";
     const translated = await translateText(text, sourceLang.value, targetLang.value);
     outputText.value = translated;
 });
 
 // Text-to-Speech
 speakBtn.addEventListener('click', () => {
+    if (!outputText.value.trim()) return;
     const utterance = new SpeechSynthesisUtterance(outputText.value);
     utterance.lang = targetLang.value;
     window.speechSynthesis.speak(utterance);
