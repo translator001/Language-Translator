@@ -1,49 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Language Translator</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Language Translator</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <h1>🌍 Live Language Translator</h1>
-        <div class="translator">
-            
-            <!-- Input Section -->
-            <div class="input-section">
-                <label for="source-lang">From:</label>
-                <select id="source-lang">
-                    <option value="">🌐 Auto Detect</option>
-                    <option value="en">English</option>
-                    <option value="es">Spanish</option>
-                    <option value="fr">French</option>
-                    <option value="de">German</option>
-                    <option value="hi">Hindi</option>
-                </select>
-                <textarea id="input-text" placeholder="Type or speak text here..."></textarea>
-                <button id="mic-btn">🎤 Speak</button>
-            </div>
+  <div class="container">
+    <h1>🌍 Live Language Translator</h1>
 
-            <!-- Output Section -->
-            <div class="output-section">
-                <label for="target-lang">To:</label>
-                <select id="target-lang">
-                    <option value="es">Spanish</option>
-                    <option value="en">English</option>
-                    <option value="fr">French</option>
-                    <option value="de">German</option>
-                    <option value="hi">Hindi</option>
-                </select>
-                <textarea id="output-text" placeholder="Translated text will appear here..." readonly></textarea>
-                <button id="speak-btn">🔊 Listen</button>
-            </div>
-
-            <!-- Translate Button -->
-            <button id="translate-btn">🚀 Translate</button>
-        </div>
+    <!-- Input Section -->
+    <div class="input-section">
+      <label for="source-lang">From:</label>
+      <select id="source-lang">
+        <option value="">🌐 Auto Detect</option>
+        <option value="en">English</option>
+        <option value="es">Spanish</option>
+        <option value="fr">French</option>
+        <option value="de">German</option>
+        <option value="hi">Hindi</option>
+      </select>
+      <textarea id="input-text" placeholder="Type or speak text here..."></textarea>
+      <button id="mic-btn">🎤 Speak</button>
     </div>
-    <script src="script.js"></script>
+
+    <!-- Output Section -->
+    <div class="output-section">
+      <label for="target-lang">To:</label>
+      <select id="target-lang">
+        <option value="es">Spanish</option>
+        <option value="en">English</option>
+        <option value="fr">French</option>
+        <option value="de">German</option>
+        <option value="hi">Hindi</option>
+      </select>
+      <textarea id="output-text" placeholder="Translated text will appear here..." readonly></textarea>
+      <button id="speak-btn">🔊 Listen</button>
+    </div>
+
+    <button id="translate-btn">🚀 Translate</button>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
