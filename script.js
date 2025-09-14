@@ -1,8 +1,4 @@
-// Speech Recognition Setup
-const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-recognition.lang = 'en-US'; // Default language
-recognition.interimResults = true;
-
+// DOM Elements
 const micBtn = document.getElementById('mic-btn');
 const inputText = document.getElementById('input-text');
 const outputText = document.getElementById('output-text');
@@ -11,67 +7,71 @@ const targetLang = document.getElementById('target-lang');
 const translateBtn = document.getElementById('translate-btn');
 const speakBtn = document.getElementById('speak-btn');
 
-// Update recognition language when source language changes
+// ------------------- SPEECH RECOGNITION -------------------
+const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+recognition.lang = 'en-US';
+recognition.interimResults = true;
+
 sourceLang.addEventListener('change', () => {
-    recognition.lang = sourceLang.value;
+  recognition.lang = sourceLang.value || 'en-US';
 });
 
-// Speech Recognition
 micBtn.addEventListener('click', () => {
-    if (micBtn.classList.contains('active')) {
-        recognition.stop();
-        micBtn.classList.remove('active');
-    } else {
-        recognition.start();
-        micBtn.classList.add('active');
-    }
+  if (micBtn.classList.contains('active')) {
+    recognition.stop();
+    micBtn.classList.remove('active');
+  } else {
+    recognition.start();
+    micBtn.classList.add('active');
+  }
 });
 
 recognition.onresult = (event) => {
-    const transcript = Array.from(event.results)
-        .map(result => result[0].transcript)
-        .join('');
-    inputText.value = transcript;
+  const transcript = Array.from(event.results)
+    .map(r => r[0].transcript)
+    .join('');
+  inputText.value = transcript;
 };
 
-recognition.onend = () => {
-    micBtn.classList.remove('active');
-};
+recognition.onend = () => micBtn.classList.remove('active');
 
-// Translation Function (Using LibreTranslate.de API)
+// ------------------- TRANSLATION -------------------
 async function translateText(text, source, target) {
-    try {
-        const response = await fetch('https://libretranslate.de/translate', {
-            method: 'POST',
-            body: JSON.stringify({
-                q: text,
-                source: source === "" ? "auto" : source, // auto-detect if not set
-                target: target,
-                format: 'text'
-            }),
-            headers: { 'Content-Type': 'application/json' }
-        });
-        const data = await response.json();
-        return data.translatedText;
-    } catch (error) {
-        console.error('Translation error:', error);
-        return 'Translation failed. Please try again.';
-    }
+  const payload = {
+    q: text,
+    source: source === "" ? "auto" : source,
+    target: target,
+    format: "text"
+  };
+
+  try {
+    // Use form-encoded to avoid CORS preflight
+    const res = await fetch("https://libretranslate.de/translate", {
+      method: "POST",
+      body: new URLSearchParams(payload)
+    });
+
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    return data.translatedText;
+  } catch (err) {
+    console.error("Translation error:", err);
+    return "❌ Translation failed. Try again.";
+  }
 }
 
-// Translate Button
 translateBtn.addEventListener('click', async () => {
-    const text = inputText.value;
-    if (text.trim() === '') return;
-    outputText.value = "Translating...";
-    const translated = await translateText(text, sourceLang.value, targetLang.value);
-    outputText.value = translated;
+  const text = inputText.value.trim();
+  if (!text) return;
+  outputText.value = "⏳ Translating...";
+  const translated = await translateText(text, sourceLang.value, targetLang.value);
+  outputText.value = translated;
 });
 
-// Text-to-Speech
+// ------------------- TEXT TO SPEECH -------------------
 speakBtn.addEventListener('click', () => {
-    if (!outputText.value.trim()) return;
-    const utterance = new SpeechSynthesisUtterance(outputText.value);
-    utterance.lang = targetLang.value;
-    window.speechSynthesis.speak(utterance);
+  if (!outputText.value.trim()) return;
+  const utterance = new SpeechSynthesisUtterance(outputText.value);
+  utterance.lang = targetLang.value || "en-US";
+  window.speechSynthesis.speak(utterance);
 });
