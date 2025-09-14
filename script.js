@@ -45,10 +45,10 @@ async function translateText(text, source, target) {
   };
 
   try {
-    // Use form-encoded to avoid CORS preflight
-    const res = await fetch("https://libretranslate.de/translate", {
+    const res = await fetch("http://localhost:3000/translate", {
       method: "POST",
-      body: new URLSearchParams(payload)
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     });
 
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -75,3 +75,4 @@ speakBtn.addEventListener('click', () => {
   utterance.lang = targetLang.value || "en-US";
   window.speechSynthesis.speak(utterance);
 });
+a
